@@ -30,4 +30,8 @@
       <None Remove="obj\**" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\TddBudget\TddBudget.csproj" />
+    </ItemGroup>
+
 </Project>
