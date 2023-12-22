@@ -5,24 +5,39 @@ public class Budget
     public int Amount { get; set; }
     public string YearMonth { get; set; } = null!;
 
+    private DateTime FirstDateInMonth => DateTime.ParseExact(YearMonth, "yyyyMM", null);
+
     public int AmountWithinPeriod(DateTime start, DateTime end)
     {
-        var firstDateInMonth = DateTime.ParseExact(YearMonth, "yyyyMM", null);
-       
-        var budgetPerDay = Amount / DateTime.DaysInMonth(firstDateInMonth.Year, firstDateInMonth.Month);
-
-        if (start > firstDateInMonth)
+        if (start > FirstDateInMonth)
         {
-            return (firstDateInMonth.AddMonths(1) - start).Days * budgetPerDay;
+            return GetRemainingDaysInStartMonth(start) * GetBudgetPerDay();
         }
 
-        if (end < firstDateInMonth.AddMonths(1))
+        if (end < FirstDateInNextMonth)
         {
-            return ((end - firstDateInMonth).Days + 1) * budgetPerDay;
+            return GetRemainingDaysForEndMonth(end) * GetBudgetPerDay();
         }
 
         return Amount;
     }
+
+    private int GetBudgetPerDay()
+    {
+        return Amount / DateTime.DaysInMonth(FirstDateInMonth.Year, FirstDateInMonth.Month);
+    }
+
+    private int GetRemainingDaysForEndMonth(DateTime end)
+    {
+        return ((end - FirstDateInMonth).Days + 1);
+    }
+
+    private int GetRemainingDaysInStartMonth(DateTime start)
+    {
+        return (FirstDateInMonth.AddMonths(1) - start).Days;
+    }
+
+    private DateTime FirstDateInNextMonth => FirstDateInMonth.AddMonths(1);
 
     public bool IsWithInPeriod(DateTime start, DateTime end)
     {
