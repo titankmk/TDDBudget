@@ -17,7 +17,7 @@ public class BudgetService
         }
 
         return _budgetRepo.GetAll()
-            .Where(budget => budget.IsBudgetPeriod(start, end))
-            .Sum(eachMonth => eachMonth.GetBudgetAmount(start, end));
+            .Where(budget => budget.IsWithInPeriod(start, end))
+            .Sum(budget => budget.AmountWithinPeriod(start, end));
     }
 }

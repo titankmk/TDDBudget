@@ -3,7 +3,7 @@ using NSubstitute;
 
 namespace TddBudget.UnitTests;
 
-public class Tests
+public class BudgetTest
 {
     private IBudgetRepo _budgetRepo = null!;
     private BudgetService _budgetService = null!;
@@ -38,18 +38,18 @@ public class Tests
             },
             new()
             {
-                YearMonth = "202302",
-                Amount = 280
+                YearMonth = "202303",
+                Amount = 310
             },
             new()
             {
-                YearMonth = "202303",
-                Amount = 310
+                YearMonth = "202304",
+                Amount = 300
             }
         });
         _budgetService = new BudgetService(_budgetRepo);
 
-        var totalBudget = _budgetService.Query(new DateTime(2022,12,21), new DateTime(2023,2,10));
+        var totalBudget = _budgetService.Query(new DateTime(2022,12,21), new DateTime(2023,3,10));
         totalBudget.Should().Be(4300);
     }
     
@@ -60,18 +60,8 @@ public class Tests
         {
             new()
             {
-                YearMonth = "202212",
-                Amount = 3100
-            },
-            new()
-            {
                 YearMonth = "202301",
                 Amount = 3100
-            },
-            new()
-            {
-                YearMonth = "202302",
-                Amount = 280
             }
         });
 
